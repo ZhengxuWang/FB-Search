@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+  <script src="https://connect.facebook.net/en_US/sdk.js"></script>
+  <link type="text/css" href="h8.css" rel="stylesheet">
+  <script type="text/javascript" src="h8.js">
+  </script>
+</head>
+<body>
+  <div ng-app="myApp" ng-controller="testCtrl" ng-init="page_show=false">
+  <form class="navbar-form navbar-left" id="form">
+    <p class="navbar-text" id="FBsearch">FB Search</p>
+    <div class="form-group">
+      <input type="text" class="form-control" placeholder="type something..." id="search" name="search" required>
+    </div>
+    <button type="submit" id="submit" class="btn btn-primary" name="submit" ng-click="tableprogress_submits()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+    <button type="submit" id="clear" class="btn btn-default" ng-click="clear()">Clear</button>
+  <div id="nav">
+  <ul class="nav nav-pills" role="tablelist" id="tabs">
+    <li ng-click="" class="active" value="user" id="users"><a id="user" data-toggle="pill" href="">Users</a></li>
+    <li ng-click="" value="page" id="pages"><a id="page" data-toggle="pill" href="">Pages</a></li>
+    <li ng-click="" value="event" id="events"><a id="event" data-toggle="pill" href="">Events</a></li>
+    <li ng-click="" value="place" id="places"><a id="place" data-toggle="pill" href="">Places</a></li>
+    <li ng-click="" value="group" id="groups"><a id="group" data-toggle="pill" href="">Groups</a></li>
+    <li ng-click="" value="favorite" id=favorites><a id="favorite" data-toggle="pill" href="">Favorites</a></li>
+  </ul>
+</div>
+</form>
+<div id="content" class="container">
+  <div class="progress" ng-show="table_progress">
+  <div class="progress-bar" aria-valuemin="0" valuemax="100" id="myBar" aria-valuenow="0" style="width: 80%"></div>
+  </div>
+    <div id="table_user" ng-show="table_user_display">
+      <div class="row">
+    <table class="table table-striped">
+        <tr><th>#</th><th>Profile photo</th><th>Name</th><th>Favorite</th><th>Details</th></tr>
+        <tr ng-repeat="x in table_data.data" >
+          <td>{{$index+num}}</td>
+          <td><img ng-src="{{x.picture.data.url}}" height="30px" width="40px"></td>
+          <td>{{x.name}}</td>
+          <td><button type="submit" ng-click="local_storage(x.id)" id="{{x.id}}"><div id="{{x.id}}_on" style="display:block"><span class="glyphicon glyphicon-star-empty"></div>
+          <div id="{{x.id}}_off" style="display:none"><div style="color:rgb(245,216,0);"><span class="glyphicon glyphicon-star"></div></div></button></td>
+          <td><button type="submit" ng-click="details(x.id,x.name,x.picture.data.url)"><span class="glyphicon glyphicon-chevron-right"></span></button></td>
+        </tr>
+    </table>
+  </div>
+
+  <div class="row">
+  <div ng-show="page_show" class="col-md-3 col-md-offset-4">
+  <button type="submit" class="btn btn-default" name="previous" ng-click="tableprogress_previous()">Previous</button>
+  <button type="submit" class="btn btn-default" name="next" ng-click="tableprogress_next()">Next</button>
+
+  </div>
+  </div>
+
+    </div>
+    <div id="table_user_next" ng-show="table_user_next_display">
+      <div class="row">
+    <table class="table table-striped">
+        <tr><th>#</th><th>Profile photo</th><th>Name</th><th>Favorite</th><th>Details</th></tr>
+        <tr ng-repeat="x in table_data_next.data">
+          <td>{{$index+num}}</td>
+          <td><img ng-src="{{x.picture.data.url}}" height="30px" width="40px"></td>
+          <td>{{x.name}}</td>
+          <td><button type="submit" ng-click="local_storage(x.id)" id="{{x.id}}"><div id="{{x.id}}_on" style="display:block"><span class="glyphicon glyphicon-star-empty"></div>
+          <div id="{{x.id}}_off" style="display:none"><div style="color:rgb(245,216,0);"><span class="glyphicon glyphicon-star"></div></div></button></td>
+          <td><button type="submit" ng-click="details(x.id,x.name,x.picture.data.url)"><span class="glyphicon glyphicon-chevron-right"></span></button></td>
+        </tr>
+    </table>
+  </div>
+
+  <div class="row">
+  <div ng-show="page_show" class="col-md-3 col-md-offset-4">
+  <button type="submit" class="btn btn-default" name="previous" ng-click="tableprogress_previous()">Previous</button>
+  <button type="submit" class="btn btn-default" name="next" ng-click="tableprogress_next()">Next</button>
+  </div>
+  </div>
+
+    </div>
+    <div id="table_user_previous" ng-show="table_user_previous_display">
+      <div class="row">
+    <table class="table table-striped">
+        <tr><th>#</th><th>Profile photo</th><th>Name</th><th>Favorite</th><th>Details</th></tr>
+        <tr ng-repeat="x in table_data_previous.data">
+          <td>{{$index+num}}</td>
+          <td><img ng-src="{{x.picture.data.url}}" height="30px" width="40px"></td>
+          <td>{{x.name}}</td>
+          <td><button type="submit" ng-click="local_storage(x.id)" id="{{x.id}}"><div id="{{x.id}}_on" style="display:block"><span class="glyphicon glyphicon-star-empty"></div>
+          <div id="{{x.id}}_off" style="display:none"><div style="color:rgb(245,216,0);"><span class="glyphicon glyphicon-star"></div></div></button></td>
+          <td><button type="submit" ng-click="details(x.id,x.name,x.picture.data.url)"><span class="glyphicon glyphicon-chevron-right"></span></button></td>
+        </tr>
+    </table>
+  </div>
+
+  <div class="row">
+  <div ng-show="page_show" class="col-md-3 col-md-offset-4">
+    <button type="submit" class="btn btn-default" name="previous" ng-click="tableprogress_previous()">Previous</button>
+  <button type="submit" class="btn btn-default" name="next" ng-click="tableprogress_next()">Next</button>
+  </div>
+  </div>
+
+    </div>
+    <div id="table_favorite" ng-show="table_favorite_display">
+    <table class="table table-striped">
+        <tr><th>#</th><th>Profile photo</th><th>Name</th><th>Type</th><th>Favorite</th><th>Details</th></tr>
+        <tr ng-repeat="x in table_data_previous.data">
+          <td>{{$index}}</td>
+          <td><img ng-src="{{x.picture.data.url}}" height="30px" width="40px"></td>
+          <td>{{x.name}}</td>
+          <td><button type="submit" ng-click="local_storage(x.id)" id="{{x.id}}"><div id="{{x.id}}_on" style="display:block"><span class="glyphicon glyphicon-star-empty"></div>
+          <div id="{{x.id}}_off" style="display:none"><div style="color:rgb(245,216,0);"><span class="glyphicon glyphicon-star"></div></div></button></td>
+          <td><button type="submit" ng-click="details(x.id,x.name,x.picture.data.url)"><span class="glyphicon glyphicon-chevron-right"></span></button></td>
+        </tr>
+    </table>
+    </div>
+    
+    <div id="table_user_detail" ng-show="table_user_detail_display">
+      <div class="row">
+      <div class="col-md-10">
+      <button type="submit" id="back" class="btn btn-default" name="back" ng-click="back()"><span class="glyphicon glyphicon-chevron-left"></span>Back</button>
+    </div>
+    <div class="col-md-2">
+      <button type="submit" id="fav" class="btn btn-default" name="fav" ng-click="addfav()"><div ng-show="detail_star_on"><span class="glyphicon glyphicon-star-empty"></div>
+      <div ng-show="detail_star_off"><div style="color:rgb(245,216,0);"><span class="glyphicon glyphicon-star"></div></span></button>
+      <button type="submit" id="facebook" class="btn btn-default" name="facebook" ng-click="face_book()"><img src="http://cs-server.usc.edu:45678/hw/hw8/images/facebook.png" width="20px" height="20px"></span></button>
+    </div>
+  </div>
+</div>
+  <div class="row">
+    <div class="col-md-6" ng-show="data_albums">
+      <div class="panel-group" >
+    <div class="panel panel-default" ng-repeat="x in table_detail.albums.data">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#detail_album" href="#detail_album_{{$index}}">{{x.name}}</a>
+        </h4>
+      </div>
+      <div id="detail_album_{{$index}}" class="panel-collapse collapse">
+        <div class="panel-body" ng-repeat="y in x.photos.data"><img ng-src="{{y.picture}}" width="300px" height="200px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-md-6" ng-show="data_albums_no">
+    <p class="bg-warning">No Data Found</p>
+</div>
+
+<div class="col-md-6" ng-show="data_posts">
+  <div class="panel-group" id="detail_post">
+<div class="panel panel-default" ng-repeat="x in table_detail.posts.data">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}"><img ng-src="{{user_url}}" height="30px" width="40px">{{user_name}}</a>
+    </h4>
+  </div>
+  <div id="collapse{{$index}}" class="panel-collapse collapse">
+    <div class="panel-body">{{x.message}}</div>
+  </div>
+</div>
+</div>
+</div>
+
+<div class="col-md-6" id="detail_posts_no" ng-show="data_posts_no">
+  <p class="bg-warning">No Data Found</p>
+</div>
+
+</div>
+</div>
+</div>
+    </body>
+  </html>
